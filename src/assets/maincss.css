@@ -13,6 +13,8 @@
 .spin-game-area {
     display: flex;
     flex-direction: column;
+    /*border:1px solid white;*/
+    align-items: center;
 }
 
 .Spin-main-controls {

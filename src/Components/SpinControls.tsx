@@ -24,8 +24,6 @@ export const SpinControls: FC<SpinControlsProps> = ({
                                                         OnSetActive,
                                                         active
                                                     }) => {
-
-
     const handleControlClick = (btn: ControlButton) => {
         OnSetActive((prev) => {
             if (btn.type === "range") {
@@ -34,7 +32,6 @@ export const SpinControls: FC<SpinControlsProps> = ({
             return prev;
         });
     };
-
 
     return (
         <div className="Spin-main-controls">
@@ -75,6 +72,7 @@ export const SpinControls: FC<SpinControlsProps> = ({
                 <div>
                 </div>
             </div>
+
             <div className="controls-container">
                 <div className="controls-row">
                     {controls
