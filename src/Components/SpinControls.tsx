@@ -1,8 +1,8 @@
 import {type Dispatch, type FC, type SetStateAction} from "react";
 import {controls} from "../Hooks/useColors.ts";
 import type {ActiveState, ControlButton} from "../Utils/types.ts";
-import betChip from "../assets/img/scene/bet-amount.png"
-import betChipSelected from "../assets/img/scene/bet-amount-selected.png"
+// import betChip from "../assets/img/scene/bet-amount.png"
+// import betChipSelected from "../assets/img/scene/bet-amount-selected.png"
 
 
 interface SpinControlsProps {
@@ -34,6 +34,8 @@ export const SpinControls: FC<SpinControlsProps> = ({
     };
 
     return (
+        <div>
+
         <div className="Spin-main-controls">
             <div className="Bet-amount-area-spin">
                 <div className="bet-Amount-text">
@@ -43,31 +45,32 @@ export const SpinControls: FC<SpinControlsProps> = ({
                     <div>
                         {betAmount}
                     </div>
-                    <div>
-                        Amount Won
-                    </div>
-                    <div>
-                        {amountWon}
-                    </div>
+                    {/*<div>*/}
+                    {/*    Amount Won*/}
+                    {/*</div>*/}
+                    {/*<div>*/}
+                    {/*    {amountWon}*/}
+                    {/*</div>*/}
                 </div>
 
                 <div className="Bet-spin-area">
                     <div className="spin-short-bet">
                         {[20, 50, 100, 150, 250, 500].map((amount) => (
                             <div
-                                className="bet-short-spin"
+                                className={`bet-short-spin ${betAmount === amount ? "active-bet":""}`}
                                 key={amount}
                                 onClick={() => OnSetBetAmount(amount)}
                             >
-                                {betAmount === amount ? (
-                                    <img src={betChipSelected} alt="chip" className="chip-image"/>
-                                ) : (
-                                    <img src={betChip} alt="chip" className="chip-image"/>
-                                )}
-                                <span className="chip-text">{amount}</span>
+                                {/*{betAmount === amount ? (*/}
+                                {/*    <img src={betChipSelected} alt="chip" className="chip-image"/>*/}
+                                {/*) : (*/}
+                                {/*    <img src={betChip} alt="chip" className="chip-image"/>*/}
+                                {/*)}*/}
+                                {amount}
                             </div>
                         ))}
                     </div>
+
                 </div>
                 <div>
                 </div>
@@ -92,6 +95,7 @@ export const SpinControls: FC<SpinControlsProps> = ({
                         })}
                 </div>
             </div>
+
             <div
                 className={`control-spin-btn ${spinState ? "active-spin" : "Spin"}`}
                 onClick={() => {
@@ -105,6 +109,6 @@ export const SpinControls: FC<SpinControlsProps> = ({
             </div>
 
         </div>
-
+        </div>
     );
 }

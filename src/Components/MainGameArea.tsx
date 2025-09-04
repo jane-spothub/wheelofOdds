@@ -3,12 +3,13 @@ import {useEffect, useState} from "react";
 import "../assets/maincss.css"
 import {SpinControls} from "./SpinControls.tsx";
 import type {ActiveState, ColorBlock} from "../Utils/types.ts";
+import {ResultPopup} from "./ResultPopUp.tsx";
 
 export const MainGameArea = () => {
     const [spinState, setSpinState] = useState<boolean>(false);
     const [winner, setWinner] = useState<ColorBlock | null>(null);
-    const [betAmount,setBetAmount]=useState<number>(20)
-    const [amountWon,setAmountWon]=useState<number>(0)
+    const [betAmount, setBetAmount] = useState<number>(20)
+    const [amountWon, setAmountWon] = useState<number>(0)
     const [active, setActive] = useState<ActiveState>({
         range: "high"
     });
@@ -37,19 +38,19 @@ export const MainGameArea = () => {
         if (spinState) {
             setTimeout(() => {
                 setSpinState(false);
-            }, 3000);
+            }, 2500);
         }
     }, [betAmount, spinState, winner, active]);
 
     return (
         <div className="Spin-main-container">
-            <div className="spin-game-area">
-                <Canvas
-                    spinState={spinState}
-                    OnSetWinner={setWinner}
-                    winner={winner}
-                />
-
+            <div className="spin-main-game-area">
+                <div className="spin-game-area">
+                    <Canvas
+                        spinState={spinState}
+                        OnSetWinner={setWinner}
+                    />
+                </div>
                 <SpinControls
                     handleSpin={handleSpin}
                     spinState={spinState}
@@ -59,7 +60,13 @@ export const MainGameArea = () => {
                     OnSetActive={setActive}
                     active={active}
                 />
+                <ResultPopup
+                    winner={winner ? winner.name : null}
+                    amountWon={amountWon}
+                    onClose={() => setWinner(null)}
+                />
             </div>
+
         </div>
     );
 };

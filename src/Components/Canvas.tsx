@@ -2,17 +2,16 @@ import {useRef, useEffect, type FC, useCallback} from "react";
 import type {ColorBlock} from "../Utils/types.ts";
 import {initialColors, usePrevious} from "../Hooks/useColors.ts";
 import PointerImg from "../assets/img/scene/pointer-spin2.png"
-
+import logoImg from "../assets/img/scene/wheelofoddslogo.png"
 interface CanvasProps {
     spinState: boolean;
     OnSetWinner:(w:ColorBlock)=>void;
-    winner:ColorBlock| null;
 }
 
-export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
+export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const offsetRef = useRef(0); // rotation offset
-
+    const logo = useRef<HTMLImageElement | null>(null);
     const colorsRef = useRef<ColorBlock[]>(initialColors);
     const pointer = useRef<HTMLImageElement | null>(null);
 
@@ -95,15 +94,16 @@ export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
             } else {
                 ctx.fillStyle = "#000";
             }
-            ctx.font = "bold 32px Arial";
+
+            ctx.font = "bold 35px Arial";
             ctx.fillStyle = "#fff";
             ctx.strokeStyle = "#000";
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 5;
 
             const text = block.name;
             // adjust y position
-            ctx.strokeText(text,radius * 0.8, 0);
-            ctx.fillText(text,radius * 0.8, 0);
+            ctx.strokeText(text,radius * 0.75, 0);
+            ctx.fillText(text,radius * 0.74, 0);
 
             // ctx.fillText(block.name, radius * 0.7, 0);
             ctx.restore();
@@ -160,7 +160,7 @@ export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
         // === 🎨 Center Circle with Gradient + Outer + Inner Shadow ===
         ctx.save();
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 80, 0, Math.PI * 2);
+        ctx.arc(centerX, centerY, 120, 0, Math.PI * 2);
 
 // linear gradient for the circle fill
         const centerGradient = ctx.createRadialGradient(
@@ -169,11 +169,11 @@ export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
         );
 
 // add color stops
-        centerGradient.addColorStop(0, "rgb(242,176,30)");   // light gold
-        centerGradient.addColorStop(0.25, "rgb(242,176,30)");
-        centerGradient.addColorStop(0.5, "rgb(230,112,34)");
-        centerGradient.addColorStop(0.75, "rgb(230,112,34)");
-        centerGradient.addColorStop(1, "rgb(34,3,38)");
+        centerGradient.addColorStop(0, "rgb(65,0,30)");   // light gold
+        centerGradient.addColorStop(0.25, "rgb(28,12,22)");
+        centerGradient.addColorStop(0.5, "rgb(65,0,30)");
+        centerGradient.addColorStop(0.75, "rgb(65,0,30)");
+        centerGradient.addColorStop(1, "rgb(65,0,30)");
 // fill with gradient
         ctx.fillStyle = centerGradient;
 
@@ -189,7 +189,7 @@ export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
 // === ✨ Inner shadow trick ===
         ctx.save();
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 60, 0, Math.PI * 2);
+        ctx.arc(centerX, centerY, 120, 0, Math.PI * 2);
         ctx.clip();
 
         ctx.globalCompositeOperation = "source-atop";
@@ -206,40 +206,62 @@ export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
         //
         // ctx.stroke();
         // ctx.restore();
-        if (winner) {
-            ctx.fillStyle = "rgb(47,4,30)";   // inside color
-            ctx.font = "bold 90px Arial";     // bold + big font
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
+//         if (winner) {
+//             ctx.fillStyle = "rgb(47,4,30)";   // inside color
+//             ctx.font = "bold 90px Arial";     // bold + big font
+//             ctx.textAlign = "center";
+//             ctx.textBaseline = "middle";
+//
+//             ctx.strokeStyle = "#fffefe";      // outline color (black)
+//             ctx.lineWidth = 4;                // outline thickness
+//
+// // Draw outline first
+//             ctx.strokeText(winner.name, centerX, centerY);
+//
+// // Draw filled text on top
+//             ctx.fillText(winner.name, centerX, centerY);
+//
+//
+//         } else {
+//
+//             ctx.fillStyle = "rgb(47,4,30)";   // inside color
+//             ctx.font = "bold 100px Arial";     // bold + big font
+//             ctx.textAlign = "center";
+//             ctx.textBaseline = "middle";
+//
+//             ctx.strokeStyle = "#fffefe";      // outline color (black)
+//             ctx.lineWidth = 4;                // outline thickness
+//             ctx.strokeText("..", centerX, centerY);
+//             ctx.fillText("..", centerX, centerY);
+//             // ctx.fillText("..", centerX, centerY);
+//         }
+        // === 🎨 Draw Logo in Center ===
+        if (logo.current) {
+            const logoSize = 260; // adjust size as needed
+            const logoX = centerX - logoSize / 2;
+            const logoY = centerY - logoSize / 2;
 
-            ctx.strokeStyle = "#fffefe";      // outline color (black)
-            ctx.lineWidth = 4;                // outline thickness
+            ctx.save();
+            ctx.globalAlpha = 1; // keep full visibility (1 = opaque)
 
-// Draw outline first
-            ctx.strokeText(winner.name, centerX, centerY);
+            // 🌟 Shadow settings
+            ctx.shadowColor = "rgba(0,0,0,0.78)"; // soft black shadow
+            ctx.shadowBlur = 35; // spread softness
+            ctx.shadowOffsetX = 0; // horizontal shift
+            ctx.shadowOffsetY = 0; // vertical shift
 
-// Draw filled text on top
-            ctx.fillText(winner.name, centerX, centerY);
+            // Draw logo with shadow
+            ctx.drawImage(logo.current, logoX, logoY, logoSize, logoSize);
 
-
-        } else {
-
-            ctx.fillStyle = "rgb(47,4,30)";   // inside color
-            ctx.font = "bold 100px Arial";     // bold + big font
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            ctx.strokeStyle = "#fffefe";      // outline color (black)
-            ctx.lineWidth = 4;                // outline thickness
-            ctx.strokeText("..", centerX, centerY);
-            ctx.fillText("..", centerX, centerY);
-            // ctx.fillText("..", centerX, centerY);
+            ctx.restore();
         }
+
+
         // After drawing the wheel
         // ctx.fillStyle = "#222"; // same as background
         // ctx.fillRect(0, centerY+40, width, height / 2);
 
-    }, [winner]);
+    }, []);
 
     // initial draw
     useEffect(() => {
@@ -257,6 +279,15 @@ export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
                 pointer.current = img;
                 drawWheel(); // 👈 draw immediately once pointer is ready
             };
+            if (!logo.current) {
+                const img = new Image();
+                img.src = logoImg;
+                img.onload = () => {
+                    logo.current = img;
+                    drawWheel();
+                };
+            }
+
         } else {
             drawWheel(); // if pointer already cached
         }
@@ -303,5 +334,5 @@ export const Canvas: FC<CanvasProps> = ({spinState,OnSetWinner,winner}) => {
         requestAnimationFrame(animate);
     }, [spinState, drawWheel, prevSpin, OnSetWinner]);
 
-    return <canvas ref={canvasRef} width={800} height={800}/>;
+    return <canvas ref={canvasRef} width={820} height={820}/>;
 };
