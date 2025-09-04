@@ -54,7 +54,6 @@ export const MainGameArea = () => {
                 <SpinControls
                     handleSpin={handleSpin}
                     spinState={spinState}
-                    amountWon={amountWon}
                     OnSetBetAmount={setBetAmount}
                     betAmount={betAmount}
                     OnSetActive={setActive}

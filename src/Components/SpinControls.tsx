@@ -8,7 +8,6 @@ import type {ActiveState, ControlButton} from "../Utils/types.ts";
 interface SpinControlsProps {
     handleSpin: () => void;
     spinState: boolean;
-    amountWon: number;
     betAmount: number;
     OnSetBetAmount: Dispatch<SetStateAction<number>>;
     OnSetActive: Dispatch<SetStateAction<ActiveState>>;
@@ -20,7 +19,6 @@ export const SpinControls: FC<SpinControlsProps> = ({
                                                         spinState,
                                                         betAmount,
                                                         OnSetBetAmount,
-                                                        amountWon,
                                                         OnSetActive,
                                                         active
                                                     }) => {
